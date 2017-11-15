@@ -1,6 +1,6 @@
 #!/bin/bash
 
-cd ~/hotkey-ctl
+SCRIPTPATH="$( cd "$(dirname "$0")" ; pwd -P )"
 
 percentage() {
 
@@ -49,8 +49,8 @@ then
     myvolume=`amixer get 'Master',0 | gawk 'match($0, /\[([0-9]*)%\]/, m) {print m[1]; exit;}'`
   fi
   percentage
-  notify-send.sh/notify-send.sh "Volume: %p\n$progress" --replace-file=/tmp/volumenotification -i /usr/share/icons/gnome/48x48/apps/multimedia-volume-control.png -h int:value:$myvolume -h string:private-synchronous:myvolume &
-  aplay ./pop.wav
+  $SCRIPTPATH/notify-send.sh/notify-send.sh "Volume: %p\n$progress" --replace-file=/tmp/volumenotification -i /usr/share/icons/gnome/48x48/apps/multimedia-volume-control.png -h int:value:$myvolume -h string:private-synchronous:myvolume &
+  aplay $SCRIPTPATH/pop.wav
 elif [ "${DIR}" = "down" ]
 then
   if [ "$PULSE" = true ]
@@ -62,7 +62,7 @@ then
     myvolume=`amixer get 'Master',0 | gawk 'match($0, /\[([0-9]*)%\]/, m) {print m[1]; exit;}'`
   fi
   percentage
-  notify-send.sh/notify-send.sh "Volume: %p\n$progress" --replace-file=/tmp/volumenotification -i /usr/share/icons/gnome/48x48/apps/multimedia-volume-control.png -h int:value:$myvolume -h string:private-synchronous:volume &
-  aplay ./pop.wav
+  $SCRIPTPATH/notify-send.sh/notify-send.sh "Volume: %p\n$progress" --replace-file=/tmp/volumenotification -i /usr/share/icons/gnome/48x48/apps/multimedia-volume-control.png -h int:value:$myvolume -h string:private-synchronous:volume &
+  aplay $SCRIPTPATH/pop.wav
 fi
 

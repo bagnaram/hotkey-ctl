@@ -1,6 +1,6 @@
 #!/bin/bash
 
-cd ~/hotkey-ctl
+SCRIPTPATH="$( cd "$(dirname "$0")" ; pwd -P )"
 
 percentage() {
   mybrightness=$(( `cat /sys/class/backlight/intel_backlight/brightness` * 100 / `cat /sys/class/backlight/intel_backlight/max_brightness` ))
@@ -20,13 +20,13 @@ then
   light -A 10
   percentage
 
-  notify-send.sh/notify-send.sh "Brightness: %p\n$progress" --replace-file=/tmp/brightnessnotification -i /usr/share/icons/HighContrast/48x48/status/display-brightness.png -h int:value:$(( $mybrightness )) -h string:private-synchronous:brightness &
+  $SCRIPTPATH/notify-send.sh/notify-send.sh "Brightness: %p\n$progress" --replace-file=/tmp/brightnessnotification -i /usr/share/icons/HighContrast/48x48/status/display-brightness.png -h int:value:$(( $mybrightness )) -h string:private-synchronous:brightness &
 elif [ "$1" = "down" ]
 then
   light -U 10
   percentage
 
-  notify-send.sh/notify-send.sh "Brightness: %p\n$progress" --replace-file=/tmp/brightnessnotification -i /usr/share/icons/HighContrast/48x48/status/display-brightness.png -h int:value:$(( $mybrightness )) -h string:private-synchronous:brightness &
+  $SCRIPTPATH/notify-send.sh/notify-send.sh "Brightness: %p\n$progress" --replace-file=/tmp/brightnessnotification -i /usr/share/icons/HighContrast/48x48/status/display-brightness.png -h int:value:$(( $mybrightness )) -h string:private-synchronous:brightness &
 else
   echo "Expecting control arguments \"up\" or \"down\"."
 fi
