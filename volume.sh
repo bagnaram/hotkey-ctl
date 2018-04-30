@@ -1,6 +1,7 @@
 #!/bin/bash
 
 SCRIPTPATH="$( cd "$(dirname "$0")" ; pwd -P )"
+THEME=`gsettings get org.gnome.desktop.interface gtk-theme | tr -d "'"`
 
 percentage() {
 
@@ -49,7 +50,7 @@ then
     myvolume=`amixer get 'Master',0 | gawk 'match($0, /\[([0-9]*)%\]/, m) {print m[1]; exit;}'`
   fi
   percentage
-  $SCRIPTPATH/notify-send.sh/notify-send.sh "Volume: %p\n$progress" --replace-file=/tmp/volumenotification -i /usr/share/icons/gnome/48x48/apps/multimedia-volume-control.png -h int:value:$myvolume -h string:private-synchronous:myvolume &
+  $SCRIPTPATH/notify-send.sh/notify-send.sh "Volume: $myvolume\n$progress" --replace-file=/tmp/volumenotification -i /usr/share/icons/$THEME/48x48/notifications/notification-audio-volume-high.svg -h string:private-synchronous:volume &
   aplay $SCRIPTPATH/pop.wav
 elif [ "${DIR}" = "down" ]
 then
@@ -62,7 +63,8 @@ then
     myvolume=`amixer get 'Master',0 | gawk 'match($0, /\[([0-9]*)%\]/, m) {print m[1]; exit;}'`
   fi
   percentage
-  $SCRIPTPATH/notify-send.sh/notify-send.sh "Volume: %p\n$progress" --replace-file=/tmp/volumenotification -i /usr/share/icons/gnome/48x48/apps/multimedia-volume-control.png -h int:value:$myvolume -h string:private-synchronous:volume &
+#$SCRIPTPATH/notify-send.sh/notify-send.sh "Volume: $myvolume\n$progress" --replace-file=/tmp/volumenotification -i /usr/share/icons/gnome/48x48/apps/multimedia-volume-control.png -h int:value:$myvolume -h string:private-synchronous:volume &
+  $SCRIPTPATH/notify-send.sh/notify-send.sh "Volume: $myvolume\n$progress" --replace-file=/tmp/volumenotification -i /usr/share/icons/$THEME/48x48/notifications/notification-audio-volume-high.svg -h string:private-synchronous:volume &
   aplay $SCRIPTPATH/pop.wav
 fi
 
