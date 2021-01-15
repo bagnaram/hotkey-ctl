@@ -14,7 +14,6 @@ hotkey-ctl requires
 - notify-send.sh (provided as submodule)
 - mako A lightweight notification daemon for Wayland. Works on Sway.
 - libnotify
-- ponymix http://github.com/falconindy/ponymix
 - light https://github.com/haikarainen/light
 
 ### Cloning
@@ -25,7 +24,7 @@ git clone https://github.com/bagnaram/hotkey-ctl.git
 
 ### Setup
 
-For i3wm, you can configure the following lines in `~/.config/i3/config`
+For sway or i3wm, you can configure the following lines in `~/.config/i3/config`
 
 ```
 # audio controls
