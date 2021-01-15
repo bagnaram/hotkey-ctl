@@ -12,7 +12,7 @@ hotkey-ctl is a collection of scripts to display notifications for volume and br
 hotkey-ctl requires
 
 - notify-send.sh (provided as submodule)
-- dunst https://dunst-project.org/
+- mako A lightweight notification daemon for Wayland. Works on Sway.
 - libnotify
 - ponymix http://github.com/falconindy/ponymix
 - light https://github.com/haikarainen/light
