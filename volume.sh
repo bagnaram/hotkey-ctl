@@ -46,7 +46,7 @@ if [ "${DIR}" = "up" ]
 then
   if [ "$PULSE" = true ]
   then
-    pactl set-sink-volume 0 +5%
+    pactl set-sink-volume alsa_output.pci-0000_00_1b.0.analog-stereo +5%
     myvolume=`ponymix get-volume`
   else
     amixer set -N Master 5%+ -N unmute
@@ -60,7 +60,7 @@ elif [ "${DIR}" = "down" ]
 then
   if [ "$PULSE" = true ]
   then
-    pactl set-sink-volume 0 -5%
+    pactl set-sink-volume alsa_output.pci-0000_00_1b.0.analog-stereo -5%
     myvolume=`ponymix get-volume`
   else
     amixer set Master 5%- -N unmute
