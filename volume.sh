@@ -1,13 +1,12 @@
-#!/bin/bash
-
-SCRIPTPATH="$( cd "$(dirname "$0")" ; pwd -P )"
+#!/usr/bin/env zsh
+PS4='+%D{%s.%9.}:%N:%i>'
+set -ex 
 #THEME=`gsettings get org.gnome.desktop.interface gtk-theme | tr -d "'"`
 THEME=Adwaita
 
 ICON_NAME=/usr/share/icons/$THEME/scalable/status/audio-volume-high-symbolic.svg
 
 percentage() {
-
   progress=""
   k=$(( $myvolume / 10))
   progress="["
@@ -41,33 +40,13 @@ esac
 shift
 done
 
-
 if [ "${DIR}" = "up" ]
 then
-  if [ "$PULSE" = true ]
-  then
-    pactl set-sink-volume alsa_output.pci-0000_00_1b.0.analog-stereo +5%
-    myvolume=`ponymix get-volume`
-  else
-    amixer set -N Master 5%+ -N unmute
-    myvolume=`amixer get 'Master',0 | gawk 'match($0, /\[([0-9]*)%\]/, m) {print m[1]; exit;}'`
-  fi
-  percentage
-  #$SCRIPTPATH/notify-send.sh/notify-send.sh "Volume: $myvolume\n$progress" --replace-file=/tmp/volumenotification -i /usr/share/icons/$THEME/48x48/notifications/notification-audio-volume-high.svg -h string:private-synchronous:volume &
-  $SCRIPTPATH/notify-send.sh/notify-send.sh "$myvolume" --replace-file=/tmp/volumenotification -i "$ICON_NAME" -t 2000 -h int:value:"$myvolume" -h string:synchronous:volume
-  paplay /usr/share/sounds/freedesktop/stereo/audio-volume-change.oga
+  notify-send.sh --replace-file=/tmp/volumenotification -i "$ICON_NAME" -t 2000 "Volume" -h int:value:"$(pamixer -i 5 --get-volume)" -h string:synchronous:volume
+   pw-play /usr/share/sounds/freedesktop/stereo/audio-volume-change.oga
 elif [ "${DIR}" = "down" ]
 then
-  if [ "$PULSE" = true ]
-  then
-    pactl set-sink-volume alsa_output.pci-0000_00_1b.0.analog-stereo -5%
-    myvolume=`ponymix get-volume`
-  else
-    amixer set Master 5%- -N unmute
-    myvolume=`amixer get 'Master',0 | gawk 'match($0, /\[([0-9]*)%\]/, m) {print m[1]; exit;}'`
-  fi
-  percentage
-  $SCRIPTPATH/notify-send.sh/notify-send.sh "$myvolume" --replace-file=/tmp/volumenotification -i "$ICON_NAME" -t 2000 -h int:value:"$myvolume" -h string:synchronous:volume
-  paplay /usr/share/sounds/freedesktop/stereo/audio-volume-change.oga
+  notify-send.sh --replace-file=/tmp/volumenotification -i "$ICON_NAME" -t 2000 "Volume" -h int:value:"$(pamixer -d 5 --get-volume)" -h string:synchronous:volume
+   pw-play /usr/share/sounds/freedesktop/stereo/audio-volume-change.oga
 fi
 

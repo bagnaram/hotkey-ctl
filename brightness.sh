@@ -1,8 +1,8 @@
-#!/bin/bash
+#!/usr/bin/env zsh
 
-SCRIPTPATH="$( cd "$(dirname "$0")" ; pwd -P )"
-THEME=`gsettings get org.gnome.desktop.interface gtk-theme | tr -d "'"`
-
+#THEME=`gsettings get org.gnome.desktop.interface gtk-theme | tr -d "'"`
+THEME=Adwaita
+ICON_NAME=/usr/share/icons/$THEME/48x48/status/night-light-symbolic.symbolic.png
 percentage() {
   mybrightness=$(( `cat /sys/class/backlight/intel_backlight/brightness` * 100 / `cat /sys/class/backlight/intel_backlight/max_brightness` ))
 
@@ -19,15 +19,11 @@ percentage() {
 if [ "$1" = "up" ]
 then
   light -A 10
-  percentage
-
-  $SCRIPTPATH/notify-send.sh/notify-send.sh "Brightness: $mybrightness\n$progress" --replace-file=/tmp/brightnessnotification -i /usr/share/icons/$THEME/48x48/notifications/notification-display-brightness.svg -h string:private-synchronous:brightness &
+  notify-send.sh --replace-file=/tmp/brightnessnotification -i $ICON_NAME "Brightness" -h int:value:"$(light | awk '{print int($1+0.5)}')" -h string:synchronous:brightness
 elif [ "$1" = "down" ]
 then
   light -U 10
-  percentage
-
-  $SCRIPTPATH/notify-send.sh/notify-send.sh "Brightness: $mybrightness\n$progress" --replace-file=/tmp/brightnessnotification -i /usr/share/icons/$THEME/48x48/notifications/notification-display-brightness.svg -h string:private-synchronous:brightness &
+  notify-send.sh --replace-file=/tmp/brightnessnotification -i $ICON_NAME "Brightness" -h int:value:"$(light | awk '{print int($1+0.5)}')" -h string:synchronous:brightness
 else
   echo "Expecting control arguments \"up\" or \"down\"."
 fi
