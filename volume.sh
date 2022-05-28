@@ -1,10 +1,10 @@
 #!/usr/bin/env zsh
 PS4='+%D{%s.%9.}:%N:%i>'
 set -ex 
-#THEME=`gsettings get org.gnome.desktop.interface gtk-theme | tr -d "'"`
 THEME=Adwaita
-
 ICON_NAME=/usr/share/icons/$THEME/scalable/status/audio-volume-high-symbolic.svg
+APP_ID=`basename $0`
+TMP=/tmp/$APP_ID-notification-id
 
 percentage() {
   progress=""
@@ -40,13 +40,21 @@ esac
 shift
 done
 
+NID=$(<$TMP)
+
 if [ "${DIR}" = "up" ]
 then
-  notify-send.sh --replace-file=/tmp/volumenotification -i "$ICON_NAME" -t 2000 "Volume" -h int:value:"$(pamixer -i 5 --get-volume)" -h string:synchronous:volume
-   pw-play /usr/share/sounds/freedesktop/stereo/audio-volume-change.oga
+  VOL=`pamixer -i 5 --get-volume`
+  NID=`notify-send "volume" -a $APP_ID -p -i $ICON_NAME -t 2000 -h int:value:$VOL $VOL% -r $NID`
+  echo $NID > $TMP
+  pw-play /usr/share/sounds/freedesktop/stereo/audio-volume-change.oga
+  #canberra-gtk-play -i audio-volume-change
 elif [ "${DIR}" = "down" ]
 then
-  notify-send.sh --replace-file=/tmp/volumenotification -i "$ICON_NAME" -t 2000 "Volume" -h int:value:"$(pamixer -d 5 --get-volume)" -h string:synchronous:volume
-   pw-play /usr/share/sounds/freedesktop/stereo/audio-volume-change.oga
+  VOL=`pamixer -d 5 --get-volume`
+  NID=`notify-send "volume" -a $APP_ID -p -i $ICON_NAME -t 2000 -h int:value:$VOL $VOL% -r $NID`
+  echo $NID > $TMP
+  pw-play /usr/share/sounds/freedesktop/stereo/audio-volume-change.oga
+  #canberra-gtk-play -i audio-volume-change
 fi
 

@@ -6,8 +6,8 @@ client.
 
 * Requirements
 hotkey-ctl requires:
-** notify-send.sh (available in AUR)
-** mako A lightweight notification daemon for Wayland. Works on Sway.
+** ~mako~ A lightweight notification daemon for Wayland. Works on Sway.
+** OR ~fnott~ Keyboard driven and lightweight Wayland notification daemon for wlroots-based compositors.
 ** libnotify
 ** light https://github.com/haikarainen/light
 
@@ -19,8 +19,8 @@ hotkey-ctl requires:
 2. Call script in your window manager
    #+BEGIN_SRC text :results verbatim :exports both
    # audio controls
-   bindsym XF86AudioRaiseVolume exec ~/hotkey-ctl/volume.sh pony up #increase sound volume
-   bindsym XF86AudioLowerVolume exec ~/hotkey-ctl/volume.sh pony down #decrease sound volume
+   bindsym XF86AudioRaiseVolume exec ~/hotkey-ctl/volume.sh up #increase sound volume
+   bindsym XF86AudioLowerVolume exec ~/hotkey-ctl/volume.sh down #decrease sound volume
    # screen brightness controls
    bindsym XF86MonBrightnessUp exec ~/hotkey-ctl/brightness.sh up # increase screen brightness
    bindsym XF86MonBrightnessDown exec ~/hotkey-ctl/brightness.sh down # decrease screen brightness
