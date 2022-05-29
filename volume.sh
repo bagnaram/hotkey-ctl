@@ -1,6 +1,5 @@
 #!/usr/bin/env zsh
-PS4='+%D{%s.%9.}:%N:%i>'
-set -ex 
+
 THEME=Adwaita
 ICON_NAME=/usr/share/icons/$THEME/scalable/status/audio-volume-high-symbolic.svg
 APP_ID=`basename $0`
@@ -41,6 +40,9 @@ shift
 done
 
 NID=$(<$TMP)
+if [[ $NID == "" ]]; then
+  echo 0 > $TMP; NID=0
+fi
 
 if [ "${DIR}" = "up" ]
 then
