@@ -1,9 +1,9 @@
 #!/usr/bin/env zsh
 
-THEME=Adwaita
-ICON_NAME=/usr/share/icons/$THEME/scalable/status/audio-volume-high-symbolic.svg
+ICON_NAME=multimedia-volume-control
 APP_ID=`basename $0`
 TMP=/tmp/$APP_ID-notification-id
+SOUND=/usr/share/sounds/freedesktop/stereo/audio-volume-change.oga
 
 percentage() {
   progress=""
@@ -21,7 +21,7 @@ key="$1"
 
 case $key in
     pony)
-    PULSE=true
+    PONYMIX=true
     ;;
     up)
     DIR="up"
@@ -44,19 +44,18 @@ if [[ $NID == "" ]]; then
   echo 0 > $TMP; NID=0
 fi
 
+notify() {notify-send "volume" -a $APP_ID -p -i $ICON_NAME -t 2000 -h int:value:$VOL $VOL% -r $NID}
+
 if [ "${DIR}" = "up" ]
 then
   VOL=`pamixer -i 5 --get-volume`
-  NID=`notify-send "volume" -a $APP_ID -p -i $ICON_NAME -t 2000 -h int:value:$VOL $VOL% -r $NID`
+  NID=$(notify)
   echo $NID > $TMP
-  pw-play /usr/share/sounds/freedesktop/stereo/audio-volume-change.oga
-  #canberra-gtk-play -i audio-volume-change
+  pw-play $SOUND
 elif [ "${DIR}" = "down" ]
 then
   VOL=`pamixer -d 5 --get-volume`
-  NID=`notify-send "volume" -a $APP_ID -p -i $ICON_NAME -t 2000 -h int:value:$VOL $VOL% -r $NID`
+  NID=$(notify)
   echo $NID > $TMP
-  pw-play /usr/share/sounds/freedesktop/stereo/audio-volume-change.oga
-  #canberra-gtk-play -i audio-volume-change
+  pw-play $SOUND
 fi
-

@@ -1,8 +1,6 @@
 #!/usr/bin/env zsh
 
-#THEME=`gsettings get org.gnome.desktop.interface gtk-theme | tr -d "'"`
-THEME=Adwaita
-ICON_NAME=/usr/share/icons/$THEME/48x48/status/night-light-symbolic.symbolic.png
+ICON_NAME=video-display
 APP_ID=`basename $0`
 TMP=/tmp/$APP_ID-notification-id
 
